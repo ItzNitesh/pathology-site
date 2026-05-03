@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Healthray Technologies Booking</title>
+    <!-- Flatpickr CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        background: #f9fafb;
+        color: #111827;
+      }
+      .logo-box {
+        text-align: center;
+        width: 100%;
+        border-bottom: 1px solid #000;
+        margin-bottom: 45px;
+      }
+      .container {
+        max-width: 950px;
+        margin: 50px auto;
+        background: white;
+        display: flex;
+        border-radius: 10px;
+        box-shadow: 0 4px 16px 0 #0001;
+        position: relative;
+      }
+      .left-panel,
+      .right-panel {
+        padding: 32px 36px;
+        box-sizing: border-box;
+      }
+      .left-panel {
+        flex-basis: 45%;
+        border-right: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        background: #fff;
+      }
+      .left-panel img {
+        width: 250px;
+        margin-bottom: 10px;
+      }
+      .tagline {
+        font-size: 12px;
+        color: #318ce7;
+        margin-bottom: 18px;
+        font-weight: 500;
+      }
+      .left-panel h1 {
+        margin: 0 0 10px 0;
+        font-size: 28px;
+        font-weight: 600;
+        color: #22223b;
+      }
+      .time-info,
+      .video-info {
+        color: #707280;
+        font-size: 15px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .time-info svg,
+      .video-info svg {
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+      }
+      .desc {
+        font-size: 14px;
+        color: #374151;
+        margin: 18px 0;
+      }
+      .cookie-settings {
+        font-size: 14px;
+        color: #318ce7;
+        cursor: pointer;
+        margin-top: auto;
+        margin-bottom: 6px;
+        text-decoration: underline;
+      }
+      .right-panel {
+        flex-basis: 55%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        background: #fff;
+      }
+      .powered-by {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: #3b4252;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 0 10px 0 8px;
+        z-index: 1;
+      }
+      .right-panel h2 {
+        font-size: 18px;
+        margin: 0 0 12px 0;
+        font-weight: 600;
+        color: #1e293b;
+      }
+      .calendar-section {
+        margin: 6px 0 0 0;
+      }
+      #datePicker {
+        font-family: inherit;
+        font-size: 15px;
+        padding-left: 0;
+        border: none;
+        background: none;
+        width: 0;
+        height: 0;
+        padding: 0;
+        margin: 0;
+      }
+      .flatpickr-calendar {
+        border-radius: 10px;
+        box-shadow: 0 2px 14px #00000022;
+        margin-top: 0;
+        font-family: inherit;
+        border: 0;
+      }
+      .timezone {
+        margin: 24px 0 0 3px;
+        font-size: 13px;
+        color: #334155;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .timezone svg {
+        width: 15px;
+        height: 15px;
+      }
+      .time-slots {
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .slot {
+        padding: 8px 14px;
+        background: #e0f2fe;
+        border: 1px solid #7dd3fc;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .slot:hover {
+        background: #38bdf8;
+        color: white;
+      }
+      .slot.booked {
+        background: #f1f5f9;
+        color: #94a3b8;
+        cursor: not-allowed;
+        text-decoration: line-through;
+      }
+      .confirmation {
+        margin-top: 16px;
+        color: green;
+        font-weight: 600;
+      }
+      @media (max-width: 800px) {
+        .container {
+          flex-direction: column;
+          max-width: 96vw;
+        }
+        .left-panel,
+        .right-panel {
+          padding: 20px;
+        }
+        .left-panel {
+          border-bottom: 1px solid #e5e7eb;
+          border-right: none;
+          align-items: start;
+          text-align: left;
+        }
+        .right-panel {
+          margin-top: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Left Panel -->
+      <div class="left-panel">
+        <div class="logo-box">
+          <img src="assets/images/logo.png" alt="Healthray Logo" />
+        </div>
+
+        <div class="tagline">"Where Care Meets Technology"</div>
+        <h1></h1>
+        <div class="time-info">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 1.5A10.5 10.5 0 1 0 22.5 12 10.512 10.512 0 0 0 12 1.5Zm0 19.5a9 9 0 1 1 9-9 9.01 9.01 0 0 1-9 9Zm-.75-13.5h1.5v6l5.25 3.15-.75 1.23-6-3.6Z"
+            />
+          </svg>
+          15 min
+        </div>
+        <div class="video-info">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M17 10.5v-3a2 2 0 0 0-2-2H7a3.86 3.86 0 0 0-3 3 3.38 3.38 0 0 0 2.73 3.2V14a2 2 0 0 0 2 2h5a2.38 2.38 0 0 0 1.85-1.05Zm-3-3h1.25l-1 1.05Zm7 1.45V7.5l-3 1.5Z"
+            />
+          </svg>
+          Web conferencing details provided upon confirmation.
+        </div>
+        <div class="desc">
+          Healthray empower medical professionals, shaping a future in
+          healthcare industry with various products like HMS, EMR/EHR, Pharmacy,
+          Lab and many more.
+        </div>
+        <div class="cookie-settings">Cookie settings</div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="right-panel">
+        <div class="powered-by">Powered by Calendly</div>
+        <h2>Select a Date & Time</h2>
+        <div class="calendar-section">
+          <input
+            id="datePicker"
+            type="text"
+            placeholder="Select a Date"
+            readonly
+          />
+        </div>
+
+        <div id="timeSlots" class="time-slots"></div>
+
+        <div class="timezone" id="timezoneDisplay">
+          <svg fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12 3.75a8.25 8.25 0 1 0 8.25 8.25A8.259 8.259 0 0 0 12 3.75Zm0 15a6.75 6.75 0 1 1 6.75-6.75A6.758 6.758 0 0 1 12 18.75Zm.502-9.997a.75.75 0 1 0-1.002 1.124v3.496a.75.75 0 0 0 .75.75h3.496a.75.75 0 1 0 0-1.5h-2.744Z"
+            />
+          </svg>
+          <span></span>
+        </div>
+
+        <div id="confirmation" class="confirmation" style="display: none">
+          ✅ Slot booked successfully!
+        </div>
+      </div>
+    </div>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+      // Slot availability
+      const availableSlots = {
+        '2025-11-14': ['10:00 AM', '11:30 AM', '2:00 PM', '4:00 PM'],
+        '2025-11-15': ['9:30 AM', '12:00 PM', '3:30 PM'],
+        '2025-11-17': ['10:00 AM', '1:00 PM', '5:00 PM'],
+        '2025-11-18': ['9:00 AM', '11:00 AM', '2:30 PM'],
+        '2025-11-19': ['11:00 AM', '1:30 PM'],
+        '2025-11-20': ['10:30 AM', '12:30 PM', '3:00 PM'],
+        '2025-11-21': ['9:30 AM', '11:30 AM', '4:30 PM'],
+        '2025-11-22': ['10:00 AM', '2:00 PM', '5:00 PM'],
+        '2025-11-24': ['10:00 AM', '12:00 PM'],
+        '2025-11-25': ['9:30 AM', '11:30 AM', '2:00 PM'],
+        '2025-11-26': ['9:00 AM', '1:30 PM', '4:00 PM'],
+        '2025-11-27': ['10:30 AM', '12:30 PM', '3:30 PM'],
+        '2025-11-28': ['10:00 AM', '11:30 AM', '2:30 PM'],
+        '2025-11-29': ['9:30 AM', '12:00 PM'],
+      };
+
+      // Flatpickr setup
+      const fp = flatpickr('#datePicker', {
+        inline: true,
+        minDate: '2025-11-14',
+        maxDate: '2025-12-31',
+        disable: [
+          function (date) {
+            if (date.getFullYear() !== 2025 || date.getMonth() !== 10)
+              return true;
+            const allowed = Object.keys(availableSlots).map((d) =>
+              parseInt(d.split('-')[2])
+            );
+            return !allowed.includes(date.getDate());
+          },
+        ],
+        locale: { firstDayOfWeek: 1 },
+        onChange: function (selectedDates, dateStr) {
+          renderSlots(dateStr);
+        },
+      });
+
+      // Detect timezone
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const tzDisplay = document.querySelector('#timezoneDisplay span');
+      tzDisplay.textContent =
+        tz +
+        ' (' +
+        new Date().toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        }) +
+        ')';
+
+      // Render time slots
+      const slotsContainer = document.getElementById('timeSlots');
+      const confirmation = document.getElementById('confirmation');
+
+      function renderSlots(dateStr) {
+        slotsContainer.innerHTML = '';
+        confirmation.style.display = 'none';
+
+        const slots = availableSlots[dateStr];
+        if (!slots) {
+          slotsContainer.innerHTML =
+            '<div>No slots available for this date.</div>';
+          return;
+        }
+
+        slots.forEach((time) => {
+          const div = document.createElement('div');
+          div.className = 'slot';
+          div.textContent = time;
+          div.onclick = () => bookSlot(div, dateStr, time);
+          slotsContainer.appendChild(div);
+        });
+      }
+
+      // Book slot
+      function bookSlot(slotElem, date, time) {
+        if (slotElem.classList.contains('booked')) return;
+        slotElem.classList.add('booked');
+        confirmation.textContent = `✅ Slot booked for ${date} at ${time}`;
+        confirmation.style.display = 'block';
+      }
+
+      // Initialize default date
+      renderSlots('2025-11-14');
+    </script>
+  </body>
+</html>
